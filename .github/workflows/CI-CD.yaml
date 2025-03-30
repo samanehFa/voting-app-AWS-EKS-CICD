@@ -82,9 +82,9 @@ jobs:
           export WORKER_IMAGE="docker.io/${{ secrets.DOCKER_USERNAME }}/voting-app-worker:${{ env.IMAGE_TAG }}"
 
           # Replace placeholders in deployment templates
-          envsubst < vote-deployment.template.yaml > vote-deployment.yaml
-          envsubst < result-deployment.template.yaml > result-deployment.yaml
-          envsubst < worker-deployment.template.yaml > worker-deployment.yaml
+          envsubst < vote-deployment.yaml > vote-deployment.yaml
+          envsubst < result-deployment.yaml > result-deployment.yaml
+          envsubst < worker-deployment.yaml > worker-deployment.yaml
 
           # Debugging: Print final deployment files
           echo "Final vote-deployment.yaml:"
