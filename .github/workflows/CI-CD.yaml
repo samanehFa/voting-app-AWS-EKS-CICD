@@ -24,13 +24,33 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push
+      - name: Build and push Vote service
         uses: docker/build-push-action@v6
         with:
+          context: /home/samaneh/voting-app-AWS-EKS-with-CICD/Multi-Stack Voting Application/result 
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/voting-app-vote:${{ env.IMAGE_TAG }}
-            ${{ secrets.DOCKER_USERNAME }}/voting-app-vote:latest
+            ${{ secrets.DOCKER_USERNAME }}/result:${{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKER_USERNAME }}/result:latest
+
+      - name: Build and push Worker service
+        uses: docker/build-push-action@v6
+        with:
+          context: /home/samaneh/voting-app-AWS-EKS-with-CICD/Multi-Stack Voting Application/worker
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/worker:${{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKER_USERNAME }}/worker:latest
+
+      - name: Build and push Result service
+        uses: docker/build-push-action@v6
+        with:
+          context: /home/samaneh/voting-app-AWS-EKS-with-CICD/Multi-Stack Voting Application/vote
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/vote:${{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKER_USERNAME }}/vote:latest
+
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
