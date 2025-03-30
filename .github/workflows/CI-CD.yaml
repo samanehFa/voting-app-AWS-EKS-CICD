@@ -71,14 +71,28 @@ jobs:
         run: |
           aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.AWS_CLUSTER }}
 
-      - name: Generate the final deployment template
+      - name: Generate the final deployment templates
         run: |
           sudo apt-get update
           sudo apt-get install -y gettext-base
-          export IMAGE_NAME="docker.io/${{ secrets.DOCKER_USERNAME }}/voting-app-vote:${{ env.IMAGE_TAG }}"
-          envsubst < k8s/deployment.template.yaml > k8s/deployment.yaml
-          echo "Final deployment.yaml:"
-          cat k8s/deployment.yaml
+
+          # Define image names for each service
+          export VOTE_IMAGE="docker.io/${{ secrets.DOCKER_USERNAME }}/voting-app-vote:${{ env.IMAGE_TAG }}"
+          export RESULT_IMAGE="docker.io/${{ secrets.DOCKER_USERNAME }}/voting-app-result:${{ env.IMAGE_TAG }}"
+          export WORKER_IMAGE="docker.io/${{ secrets.DOCKER_USERNAME }}/voting-app-worker:${{ env.IMAGE_TAG }}"
+
+          # Replace placeholders in deployment templates
+          envsubst < k8s/vote-deployment.template.yaml > k8s/vote-deployment.yaml
+          envsubst < k8s/result-deployment.template.yaml > k8s/result-deployment.yaml
+          envsubst < k8s/worker-deployment.template.yaml > k8s/worker-deployment.yaml
+
+          # Debugging: Print final deployment files
+          echo "Final vote-deployment.yaml:"
+          cat k8s/vote-deployment.yaml
+          echo "Final result-deployment.yaml:"
+          cat k8s/result-deployment.yaml
+          echo "Final worker-deployment.yaml:"
+          cat k8s/worker-deployment.yaml
 
       - name: Deploy to EKS
         run: |
