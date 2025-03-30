@@ -88,11 +88,11 @@ jobs:
 
           # Debugging: Print final deployment files
           echo "Final vote-deployment.yaml:"
-          cat k8s/vote-deployment.yaml
+          cat vote-deployment.yaml
           echo "Final result-deployment.yaml:"
-          cat k8s/result-deployment.yaml
+          cat result-deployment.yaml
           echo "Final worker-deployment.yaml:"
-          cat k8s/worker-deployment.yaml
+          cat worker-deployment.yaml
 
       - name: Deploy to EKS
         run: |
